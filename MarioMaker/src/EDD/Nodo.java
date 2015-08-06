@@ -5,6 +5,8 @@
  */
 package EDD;
 
+import javax.swing.JButton;
+
 /**
  *
  * @author jenny
@@ -12,11 +14,13 @@ package EDD;
 public class Nodo {
     public Nodo siguiente,anterior;
     public Object dato;
+    public JButton boton;
     
     public Nodo(Object dato){
         this.anterior=null;
         this.siguiente=null;
         this.dato=dato;
+        boton=new JButton();
         
     }
 }

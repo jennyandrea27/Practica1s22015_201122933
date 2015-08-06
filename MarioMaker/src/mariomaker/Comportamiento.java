@@ -40,8 +40,9 @@ public class Comportamiento extends javax.swing.JFrame {
         bPila = new javax.swing.JButton();
         BCola = new javax.swing.JButton();
         bAnterior = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        bSiguiente = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
@@ -81,20 +82,25 @@ public class Comportamiento extends javax.swing.JFrame {
         getContentPane().add(bAnterior);
         bAnterior.setBounds(30, 190, 90, 28);
 
-        jButton1.setFont(new java.awt.Font("URW Bookman L", 0, 15)); // NOI18N
-        jButton1.setText("SIGUIENTE");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        bSiguiente.setFont(new java.awt.Font("URW Bookman L", 0, 15)); // NOI18N
+        bSiguiente.setText("SIGUIENTE");
+        bSiguiente.setEnabled(false);
+        bSiguiente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                bSiguienteActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1);
-        jButton1.setBounds(280, 190, 110, 28);
+        getContentPane().add(bSiguiente);
+        bSiguiente.setBounds(280, 190, 110, 28);
 
         jLabel2.setFont(new java.awt.Font("URW Bookman L", 0, 15)); // NOI18N
         jLabel2.setText("para remover los objetos...");
         getContentPane().add(jLabel2);
         jLabel2.setBounds(50, 70, 210, 16);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/fondo_1.jpg"))); // NOI18N
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(-300, -110, 720, 410);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -102,11 +108,13 @@ public class Comportamiento extends javax.swing.JFrame {
     private void bPilaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPilaActionPerformed
         // TODO add your handling code here:
         comportamiento="pila";
+        bSiguiente.setEnabled(true);
     }//GEN-LAST:event_bPilaActionPerformed
 
     private void BColaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BColaActionPerformed
         // TODO add your handling code here:
         comportamiento="cola";
+        bSiguiente.setEnabled(true);
     }//GEN-LAST:event_BColaActionPerformed
 
     private void GenerarForm(){
@@ -127,10 +135,10 @@ public class Comportamiento extends javax.swing.JFrame {
         this.setVisible(false);        
     }//GEN-LAST:event_bAnteriorActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void bSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSiguienteActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_bSiguienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -171,8 +179,9 @@ public class Comportamiento extends javax.swing.JFrame {
     private javax.swing.JButton BCola;
     private javax.swing.JButton bAnterior;
     private javax.swing.JButton bPila;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton bSiguiente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 }

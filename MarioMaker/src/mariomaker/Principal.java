@@ -40,6 +40,7 @@ public class Principal extends javax.swing.JFrame {
    //pantalla para decidir el comportamiento de la lista
    Comportamiento pcomportamiento=new Comportamiento();
    JFrame frame = new JFrame();
+   JPanel panel;
    
    MOrtogonal matriz=new MOrtogonal();
    
@@ -83,10 +84,10 @@ public class Principal extends javax.swing.JFrame {
         setTitle("Principal");
         getContentPane().setLayout(null);
 
-        jLabel1.setFont(new java.awt.Font("URW Bookman L", 0, 15)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("URW Bookman L", 1, 16)); // NOI18N
         jLabel1.setText("CARGA DE OBJETOS");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(264, 24, 167, 16);
+        jLabel1.setBounds(264, 24, 190, 30);
 
         lImagen.setFont(new java.awt.Font("URW Bookman L", 0, 15)); // NOI18N
         getContentPane().add(lImagen);
@@ -348,13 +349,13 @@ public class Principal extends javax.swing.JFrame {
         int cantidad=listadoble.getCantidad();//cantidad de nodos en la lista
         int pos=0;//posicion del objeto en la lista
         
-        JPanel panel = new JPanel()
+        panel = new JPanel()
         {
             @Override
             public Dimension getPreferredSize() {
                 return new Dimension(60, (cantidad+2)*50);
             }
-        };                
+        };            
         JScrollPane jsp=new JScrollPane(panel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         jsp.setBounds(250, 10, 500,160);
         frame.add(jsp);
@@ -558,8 +559,7 @@ public class Principal extends javax.swing.JFrame {
                 int num=Integer.parseInt(numboton.getText());                                
                 listadoble.Eliminar(num);    
                 //refrescar panel en donde se visualiza la listadoble
-                frame.setVisible(false);
-                frame=new JFrame();
+                frame.getContentPane().removeAll();
                 GraficarLista();
             }
         }); 
@@ -609,6 +609,12 @@ public class Principal extends javax.swing.JFrame {
     private void bSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSiguienteActionPerformed
         // TODO add your handling code here:
         pcomportamiento.setVisible(true);        
+        matriz.Recorrer();
+        matriz.AgregarFila(1);
+        System.out.println("//////////////////////");
+        matriz.Recorrer();
+        matriz.AgregarColumna(1);
+        System.out.println("//////////////////////");
         matriz.Recorrer();
     }//GEN-LAST:event_bSiguienteActionPerformed
 

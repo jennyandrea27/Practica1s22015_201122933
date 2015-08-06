@@ -5,6 +5,8 @@
  */
 package EDD;
 
+import javax.swing.JLabel;
+
 /**
  *
  * @author jenny
@@ -12,6 +14,7 @@ package EDD;
 public class NodoMatriz {
     NodoMatriz anterior,siguiente,arriba,abajo;
     Object dato;
+    JLabel label;
     
     public NodoMatriz(Object dato){
         this.anterior=null;
@@ -19,18 +22,9 @@ public class NodoMatriz {
         this.arriba=null;
         this.abajo=null;
         this.dato=dato;
+        label=new JLabel();
     }
-    
-    public NodoMatriz(){
-        this.anterior=null;
-        this.siguiente=null;
-        this.arriba=null;
-        this.abajo=null;
-        this.dato=null;
-    }
-
-
-    
+      
 
     
 }
