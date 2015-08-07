@@ -5,6 +5,16 @@
  */
 package EDD;
 import EDD.NodoMatriz;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.net.URL;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import mariomaker.Objeto;
+import mariomaker.Personaje;
 
 /**
  *
@@ -33,10 +43,8 @@ public class MOrtogonal {
         }
         //regresar auxcol
         auxcol=inicio;
-        //insertar filas
-        int cont=0;
-        for(int i =2;i<=numfilas;i++){
-            cont++;            
+        //insertar filas        
+        for(int i =2;i<=numfilas;i++){                    
             auxfila.arriba=new NodoMatriz(null);
             auxfila.arriba.abajo=auxfila;            
             auxcol=auxfila.arriba;
@@ -118,6 +126,134 @@ public class MOrtogonal {
             temp2=temp2.abajo;                        
         }     
         numcolumnas++;
+    }
+    
+    public void GenerarMatriz(JPanel panel,String comportamiento){
+        NodoMatriz temp=inicio;
+        NodoMatriz filatemp=inicio;
+        NodoMatriz coltemp;
+        int posfila=0;
+        int poscol=0;
+        URL direccion=null;
+        ImageIcon imagen=null;          
+        while(filatemp!=null){
+            coltemp=filatemp;
+            while(coltemp!=null){
+                if(coltemp.dato!=null){
+                    JLabel label=ImagenLabel(temp);
+                    if(label!=null){
+                        coltemp.label.setBounds(poscol, posfila, 35, 35);
+                        panel.add(coltemp.label);
+                        poscol+=36;
+                    }
+                }else{
+                    direccion=getClass().getResource("/Imagenes/null.png");
+                    imagen=new ImageIcon(direccion); 
+                    coltemp.label=new JLabel(imagen);
+                    coltemp.label.setBounds(poscol, posfila, 35, 35);                    
+                }   
+                //agregar metodos al label, dependiendo del comportamiento
+                switch (comportamiento) {
+                    case "cola":
+                        MetodoCola(coltemp.label);
+                        break;
+                    case "pila":
+                        MetodoPila(coltemp.label);
+                        break;
+                }
+                //agregar label actual al panel
+                panel.add(coltemp.label);
+                //aumenta la posicion en el eje x para dibujar siguiente label
+                poscol+=36;
+                //mover coltemp a su siguiente posicion
+                coltemp=coltemp.siguiente;
+            }
+            posfila+=36;
+            poscol=0;
+            filatemp=filatemp.abajo;
+        }
+        
+    }
+    
+    //metodo para sacar elementos como cola
+    private void MetodoCola(JLabel label){
+        label.addMouseListener(new MouseAdapter(){
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("Label click cola");
+            }
+
+        });
+    }
+    //metodo para sacar elementos como pila
+    private void MetodoPila(JLabel label){
+        label.addMouseListener(new MouseAdapter(){
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("Label click pila");
+            }
+
+        });
+    }
+    
+    //Metodo que decide que imagen colocar al label para generar matriz
+    public JLabel ImagenLabel(NodoMatriz temp){
+        URL direccion=null;
+        ImageIcon imagen=null; 
+        JLabel etiqueta=null;
+        try{
+                Personaje p=(Personaje)temp.dato;
+                direccion=getClass().getResource("/Imagenes/mario.png");
+                imagen=new ImageIcon(direccion);
+                etiqueta=new JLabel(imagen);
+            }catch(Exception e){
+                try{
+                    Objeto o=(Objeto)temp.dato;
+                    switch(o.getTipo()){
+                        case 1:
+                        direccion=getClass().getResource("/Imagenes/suelo.png");
+                        imagen=new ImageIcon(direccion);    
+                        etiqueta=new JLabel(imagen);
+                        break;
+                        case 2:
+                        direccion=getClass().getResource("/Imagenes/pared.png");
+                        imagen=new ImageIcon(direccion);   
+                        etiqueta=new JLabel(imagen);
+                        break;
+                        case 3:
+                        direccion=getClass().getResource("/Imagenes/goomba.png");
+                        imagen=new ImageIcon(direccion); 
+                        etiqueta=new JLabel(imagen);
+                        break;
+                        case 4:
+                        direccion=getClass().getResource("/Imagenes/koopa.png");
+                        imagen=new ImageIcon(direccion);    
+                        etiqueta=new JLabel(imagen);
+                        break;
+                        case 5:
+                        direccion=getClass().getResource("/Imagenes/moneda.png");
+                        imagen=new ImageIcon(direccion);   
+                        etiqueta=new JLabel(imagen);
+                        break;
+                        case 6:
+                        direccion=getClass().getResource("/Imagenes/hongo.png");
+                        imagen=new ImageIcon(direccion);   
+                        etiqueta=new JLabel(imagen);
+                        break;
+                        case 7:
+                        direccion=getClass().getResource("/Imagenes/castillo1.png");
+                        imagen=new ImageIcon(direccion);   
+                        etiqueta=new JLabel(imagen);
+                        break;
+                        default:
+                    }
+                }catch(Exception er){
+                    
+                }                
+            }
+        return etiqueta;
     }
             
     

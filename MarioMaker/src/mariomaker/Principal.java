@@ -6,11 +6,8 @@
 package mariomaker;
 
 import EDD.*;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -21,9 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
 
 /**
  *
@@ -32,15 +27,18 @@ import javax.swing.ScrollPaneConstants;
 public class Principal extends javax.swing.JFrame {
     String tipo;//tipo de objeto a agregar a la lista
      //lista doblemente enlazada para almacenar objetos
-   ListaD listadoble=new ListaD();
+   public static ListaD listadoble=new ListaD();
    //indica si existe un personaje en la lista
    public boolean personaje=false;
    //indica si existe un castillo en la lista
    public boolean castillo=false;   
    //pantalla para decidir el comportamiento de la lista
-   Comportamiento pcomportamiento=new Comportamiento();
-   JFrame frame = new JFrame();
-   JPanel panel;
+   Comportamiento pcomportamiento=new Comportamiento(listadoble);
+   //frame generado para la vista previa
+   JFrame frameVista = new JFrame();
+   JPanel panelVista;  
+   
+   
    
    MOrtogonal matriz=new MOrtogonal();
    
@@ -342,27 +340,27 @@ public class Principal extends javax.swing.JFrame {
     
     }//GEN-LAST:event_bVistaPreviaActionPerformed
 
-    //metodo para graficar los nodos de la lista en el panel de vista previa
+    //metodo para graficar los nodos de la lista en el panelVista de vista previa
     //se agrega en la ventana VistaLista
     private void GraficarLista(){
         
         int cantidad=listadoble.getCantidad();//cantidad de nodos en la lista
         int pos=0;//posicion del objeto en la lista
         
-        panel = new JPanel()
+        panelVista = new JPanel()
         {
             @Override
             public Dimension getPreferredSize() {
                 return new Dimension(60, (cantidad+2)*50);
             }
         };            
-        JScrollPane jsp=new JScrollPane(panel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        JScrollPane jsp=new JScrollPane(panelVista,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         jsp.setBounds(250, 10, 500,160);
-        frame.add(jsp);
+        frameVista.add(jsp);
         URL direccion=null;
         ImageIcon imagen=null;                
         
-        frame.setDefaultCloseOperation(HIDE_ON_CLOSE);                       
+        frameVista.setDefaultCloseOperation(HIDE_ON_CLOSE);                       
              
         
         System.out.println("cantidad "+cantidad);        
@@ -371,45 +369,45 @@ public class Principal extends javax.swing.JFrame {
         int x=10;
         int y=10;
         
-        //panel para visualizar atributos de nodos agregados a la lista
-        JPanel panel2=new JPanel();
-        panel2.setLayout(null);
-        panel2.setOpaque(false);
-        panel2.setBounds(250, 200, 500, 300);        
-        frame.add(panel2);
+        //panelVista para visualizar atributos de nodos agregados a la lista
+        JPanel panelVista2=new JPanel();
+        panelVista2.setLayout(null);
+        panelVista2.setOpaque(false);
+        panelVista2.setBounds(250, 200, 500, 300);        
+        frameVista.add(panelVista2);
         //etiquetas para atributos
         JLabel etiqueta=new JLabel("Nombre: ");
         etiqueta.setBounds(30, 20, 70, 35);
-        panel2.add(etiqueta);
+        panelVista2.add(etiqueta);
         etiqueta=new JLabel("Tipo: ");
         etiqueta.setBounds(30,60,80,25);
-        panel2.add(etiqueta);
+        panelVista2.add(etiqueta);
         etiqueta = new JLabel();
         etiqueta.setBounds(200, 10, 50, 50);
-        panel2.add(etiqueta);
+        panelVista2.add(etiqueta);
         JLabel numboton=new JLabel("");
         numboton.setBounds(0, 0, 50, 50);
         //numboton.setVisible(false);
-        panel2.add(numboton);
+        panelVista2.add(numboton);
         //campos de texto
         JTextField tbnombre=new JTextField();
         tbnombre.setBounds(110, 30, 80, 25);        
         tbnombre.setName("tbNombre");
-        panel2.add(tbnombre);
+        panelVista2.add(tbnombre);
         JTextField tbtipo=new JTextField();
         tbtipo.setBounds(110, 60, 80, 25);        
         tbtipo.setName("tbTipo");
         tbtipo.setEnabled(false);
-        panel2.add(tbtipo);
+        panelVista2.add(tbtipo);
         //botones para modificar o eliminar nodos
         JButton bmodificar=new JButton("MODIFICAR");
         bmodificar.setBounds(40, 120, 110, 30);
         Modificar(bmodificar, numboton, tbnombre, tbtipo);
-        panel2.add(bmodificar);
+        panelVista2.add(bmodificar);
         JButton beliminar=new JButton("ELIMINAR");
         beliminar.setBounds(40, 160, 110, 30);
         Eliminar(beliminar, numboton);
-        panel2.add(beliminar);                
+        panelVista2.add(beliminar);                
         
         while(temp!=null){
             try{
@@ -467,27 +465,27 @@ public class Principal extends javax.swing.JFrame {
         boton.setName(""+pos);
         //agregar metodo al boton con los campos de texto de parametros
         AgregarMetodo(boton, tbnombre, tbtipo,numboton);
-        panel.add(boton);
+        panelVista.add(boton);
         pos++;        
         x+=50;
         
         temp=temp.siguiente;
         }      
         
-        //fondo frame
-        frame.setLayout(null);
+        //fondo frameVista
+        frameVista.setLayout(null);
         direccion=getClass().getResource("/Imagenes/fondo_1.jpg");
         imagen=new ImageIcon(direccion);
         JLabel fondo=new JLabel(imagen);
         fondo.setBounds(0, 0, 1000, 600);
-        frame.add(fondo);
+        frameVista.add(fondo);
         
-        panel.setBackground(new Color(199,215,250));
+        panelVista.setBackground(new Color(199,215,250));
         
-        frame.setLayout(null);
-        frame.setSize(1000, 600);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        frameVista.setLayout(null);
+        frameVista.setSize(1000, 600);
+        frameVista.setLocationRelativeTo(null);
+        frameVista.setVisible(true);
         
     }
     private void AgregarMetodo(JButton boton,JTextField tbnombre,JTextField tbtipo,JLabel numboton){
@@ -544,6 +542,7 @@ public class Principal extends javax.swing.JFrame {
                         
                     }
                 }
+                tbnombre.setText("");
                 
             }
         }); 
@@ -557,9 +556,25 @@ public class Principal extends javax.swing.JFrame {
                 //metodo para agregar a los botones de la vista previa                
                 //numero de boton para la posicion en la lista
                 int num=Integer.parseInt(numboton.getText());                                
-                listadoble.Eliminar(num);    
-                //refrescar panel en donde se visualiza la listadoble
-                frame.getContentPane().removeAll();
+                
+                Nodo temp=listadoble.Eliminar(num);  
+                if(temp!=null){
+                try{
+                    //verifica si el nodo a modificar es un personaje
+                    Personaje p=(Personaje)temp.dato;                    
+                    personaje=false;
+                }catch(Exception er){
+                    try{
+                        //verifica si el nodo a modoficar es un Objeto
+                        Objeto o=(Objeto)temp.dato;
+                        castillo=false;
+                    }catch(Exception ex){
+                        
+                    }
+                }                    
+                }
+                //refrescar panelVista en donde se visualiza la listadoble
+                frameVista.getContentPane().removeAll();
                 GraficarLista();
             }
         }); 
@@ -608,16 +623,14 @@ public class Principal extends javax.swing.JFrame {
 
     private void bSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSiguienteActionPerformed
         // TODO add your handling code here:
-        pcomportamiento.setVisible(true);        
-        matriz.Recorrer();
-        matriz.AgregarFila(1);
-        System.out.println("//////////////////////");
-        matriz.Recorrer();
-        matriz.AgregarColumna(1);
-        System.out.println("//////////////////////");
-        matriz.Recorrer();
+        pcomportamiento.setVisible(true);                        
     }//GEN-LAST:event_bSiguienteActionPerformed
 
+    //Metodo para generar frame para generar matriz
+    public void GenerarMatriz(){
+        
+    }
+    
     //metodo para verificar si existe personaje
     public boolean PersonajeAgregado(){
         return personaje;

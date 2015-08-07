@@ -5,10 +5,17 @@
  */
 package mariomaker;
 
+import EDD.ListaD;
+import EDD.MOrtogonal;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import static mariomaker.Principal.listadoble;
 
 /**
  *
@@ -17,14 +24,20 @@ import javax.swing.JScrollPane;
 public class Comportamiento extends javax.swing.JFrame {
     String comportamiento="";
     //generar nueva form
-    JFrame juego=new JFrame();
-    JPanel panel=new JPanel();
+    //frame en donde se visualiza la matriz    
+    JFrame juego;
+    JPanel panel;
+    MOrtogonal matriz=new MOrtogonal();
+    //panel para lista
+    JPanel panellista;  
+    ListaD listadoble;
 
     /**
      * Creates new form Comportamiento
      */
-    public Comportamiento() {
+    public Comportamiento(ListaD listadoble) {
         initComponents();
+        this.listadoble=listadoble;
     }
 
     /**
@@ -44,7 +57,6 @@ public class Comportamiento extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("URW Bookman L", 0, 15)); // NOI18N
@@ -60,7 +72,7 @@ public class Comportamiento extends javax.swing.JFrame {
             }
         });
         getContentPane().add(bPila);
-        bPila.setBounds(100, 120, 46, 28);
+        bPila.setBounds(100, 120, 70, 30);
 
         BCola.setFont(new java.awt.Font("URW Bookman L", 0, 15)); // NOI18N
         BCola.setText("COLA");
@@ -70,7 +82,7 @@ public class Comportamiento extends javax.swing.JFrame {
             }
         });
         getContentPane().add(BCola);
-        BCola.setBounds(240, 120, 56, 28);
+        BCola.setBounds(240, 120, 80, 30);
 
         bAnterior.setFont(new java.awt.Font("URW Bookman L", 0, 15)); // NOI18N
         bAnterior.setText("VOLVER");
@@ -100,9 +112,10 @@ public class Comportamiento extends javax.swing.JFrame {
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/fondo_1.jpg"))); // NOI18N
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(-300, -110, 720, 410);
+        jLabel3.setBounds(-240, -80, 720, 410);
 
-        pack();
+        setSize(new java.awt.Dimension(409, 276));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void bPilaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPilaActionPerformed
@@ -117,18 +130,62 @@ public class Comportamiento extends javax.swing.JFrame {
         bSiguiente.setEnabled(true);
     }//GEN-LAST:event_BColaActionPerformed
 
-    private void GenerarForm(){
-        juego=new JFrame();
+    private void GenerarMatriz(){
+        
         panel=new JPanel(){
             
             public Dimension getPreferedSize(){
-                return new Dimension(50,600);
+                return new Dimension(500,500);
             }
         };
-        JScrollPane jsp=new JScrollPane(panel,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        jsp.setBounds(100,0,60,610);
+        JScrollPane jsp=new JScrollPane(panel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        jsp.setBounds(250,150,500,500);        
         juego.add(jsp);
+        panel.setLayout(null);
+        panel.setBackground(new Color(199,215,250));
+        matriz.GenerarMatriz(panel,comportamiento);
+        
+        
+    }
+    //genera el panel para visualizar la lista de elementos agregados
+    //incluye el comportamiento de salida de los mismos
+    private void GenerarLista(){
+        int cantidad=listadoble.getCantidad();//cantidad de nodos en la lista
+        panellista=new JPanel(){            
+            public Dimension getPreferedSize(){
+                return new Dimension(500, 50);
+            }
+        };
+        JScrollPane jsp2=new JScrollPane(panellista,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        jsp2.setBounds(250, 10, 500,80);
+        juego.add(jsp2); 
+        panellista.setBackground(new Color(199,215,250));
+        //panellista.setLayout(null);
+        listadoble.GenerarLista(panellista);  
+        
+              
+              
+    }
+    //genera nuevo form junto con el panel q contiene la matriz
+    private void GenerarForm(){
+        juego=new JFrame();
+        GenerarMatriz();
+        GenerarLista();        
+        //fondo frameVista
+        juego.setLayout(null);
+        URL direccion=null;
+        ImageIcon imagen=null; 
+        direccion=getClass().getResource("/Imagenes/fondo_1.jpg");
+        imagen=new ImageIcon(direccion);
+        JLabel fondo=new JLabel(imagen);
+        fondo.setBounds(0, 0, 1000, 600);
+        juego.add(fondo);
+        juego.setLayout(null);
+        juego.setSize(1000, 1000);
         juego.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        
+        juego.setLocationRelativeTo(null);
+        juego.setVisible(true);                
     }
     private void bAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAnteriorActionPerformed
         // TODO add your handling code here:
@@ -138,42 +195,13 @@ public class Comportamiento extends javax.swing.JFrame {
     private void bSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSiguienteActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
+        GenerarForm();
     }//GEN-LAST:event_bSiguienteActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Comportamiento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Comportamiento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Comportamiento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Comportamiento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Comportamiento().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BCola;

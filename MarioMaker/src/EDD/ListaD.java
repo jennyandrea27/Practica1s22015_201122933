@@ -5,6 +5,10 @@
  */
 package EDD;
 
+import java.net.URL;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 import mariomaker.Objeto;
 import mariomaker.Personaje;
 
@@ -174,5 +178,70 @@ public class ListaD {
             System.out.println("no se reemplazo objeto");
         }
         
+    }
+    public void GenerarLista(JPanel panel){
+        Nodo temp=pinicio;
+        URL direccion=null;
+        ImageIcon imagen=null; 
+        JButton boton;
+        int x=10;
+        while(temp!=null){
+            try{
+                Personaje p=(Personaje)temp.dato;
+                direccion=getClass().getResource("/Imagenes/mariov.png");
+                imagen=new ImageIcon(direccion);
+                boton=new JButton(imagen);
+            }catch(Exception e){
+                try{
+                    Objeto o=(Objeto)temp.dato;
+                    switch(o.getTipo()){
+                        case 1:
+                        direccion=getClass().getResource("/Imagenes/suelo.png");
+                        imagen=new ImageIcon(direccion);    
+                        boton=new JButton(imagen);
+                        break;
+                        case 2:
+                        direccion=getClass().getResource("/Imagenes/pared.png");
+                        imagen=new ImageIcon(direccion);   
+                        boton=new JButton(imagen);
+                        break;
+                        case 3:
+                        direccion=getClass().getResource("/Imagenes/goombav.png");
+                        imagen=new ImageIcon(direccion); 
+                        boton=new JButton(imagen);
+                        break;
+                        case 4:
+                        direccion=getClass().getResource("/Imagenes/koopav.png");
+                        imagen=new ImageIcon(direccion);    
+                        boton=new JButton(imagen);
+                        break;
+                        case 5:
+                        direccion=getClass().getResource("/Imagenes/moneda.png");
+                        imagen=new ImageIcon(direccion);   
+                        boton=new JButton(imagen);
+                        break;
+                        case 6:
+                        direccion=getClass().getResource("/Imagenes/hongo.png");
+                        imagen=new ImageIcon(direccion);   
+                        boton=new JButton(imagen);
+                        break;
+                        case 7:
+                        direccion=getClass().getResource("/Imagenes/castillo1.png");
+                        imagen=new ImageIcon(direccion);   
+                        boton=new JButton(imagen);
+                        break;
+                        default:
+                    }
+                }catch(Exception er){
+                    
+                }                
+            }
+        boton=new JButton(imagen);
+        boton.setBounds(x, 10, 50, 50);  
+        panel.add(boton);
+        x+=50;
+        
+        temp=temp.siguiente;
+        }  
     }
 }

@@ -19,20 +19,20 @@ public class Objeto {
     void Imprimir(){
         System.out.println("Objeto "+this.tipo+" "+this.nombre);
     }
-    int getTipo(){
-        if(tipo=="suelo"){
+    public int getTipo(){
+        if(tipo.equals("suelo")){
             return 1;
-        }else if(tipo=="pared"){
+        }else if(tipo.equals("pared")){
             return 2;
-        }else if(tipo=="goomba"){
+        }else if(tipo.equals("goomba")){
             return 3;
-        }else if(tipo=="koopa"){
+        }else if(tipo.equals("koopa")){
             return 4;
-        }else if(tipo=="moneda"){
+        }else if(tipo.equals("moneda")){
             return 5;
-        }else if(tipo=="hongo"){
+        }else if(tipo.equals("hongo")){
             return 6;
-        }else if(tipo=="castillo"){
+        }else if(tipo.equals("castillo")){
             return 7;
         }
     return -1;
