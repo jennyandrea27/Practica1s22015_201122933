@@ -226,7 +226,11 @@ public class Comportamiento extends javax.swing.JFrame {
         JLabel etiqueta=null;
         try{
                 Personaje p=(Personaje)temp.dato;
-                direccion=getClass().getResource("/Imagenes/mariov.png");
+                if(p.direccion.equals("derecha")){                    
+                    direccion=getClass().getResource("/Imagenes/mariod.png");
+                }else{
+                    direccion=getClass().getResource("/Imagenes/marioi.png");
+                }
                 imagen=new ImageIcon(direccion);
                 etiqueta=new JLabel(imagen);
             }catch(Exception e){

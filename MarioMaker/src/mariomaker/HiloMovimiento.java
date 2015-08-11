@@ -16,10 +16,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import static javax.swing.WindowConstants.HIDE_ON_CLOSE;
@@ -40,8 +42,11 @@ public class HiloMovimiento implements Runnable{
     JPanel panel;//panel para graficar matriz
     boolean cambio=true;
     int contteclas=0;
-    int punteo=0;
-    int vida=1;
+    public static int punteo=0;
+    public static int vida=1;
+    
+    JLabel lpunteo=new JLabel("Punteo: "+punteo);
+    JLabel lvidas=new JLabel("Vidas: "+vida);
 
     public HiloMovimiento(MOrtogonal matriz) {
         this.moriginal=(MOrtogonal)matriz.clone();
@@ -96,12 +101,13 @@ public class HiloMovimiento implements Runnable{
         JButton breanudar=new JButton("REANUDAR");
         breanudar.setBounds(50,300,100,50);
         MetodoBReanudar(breanudar);
-        formjuego.add(breanudar);
-        //boton para reanudar el juego
-        JButton breiniciar=new JButton("REINICIAR");
-        breiniciar.setBounds(50,400,100,50);
-        MetodoBReiniciar(breiniciar);
-        formjuego.add(breiniciar);
+        formjuego.add(breanudar);        
+        //label punteo
+        lpunteo.setBounds(50, 50, 125, 50);
+        formjuego.add(lpunteo);
+        //label vidas        
+        lvidas.setBounds(50, 120, 125, 50);
+        formjuego.add(lvidas);
         //agregar boton para visualizar grafo de matriz
         JButton bmatriz=new JButton();
         bmatriz.setText("Matriz");
@@ -176,7 +182,11 @@ public class HiloMovimiento implements Runnable{
         JLabel etiqueta=null;
         try{
                 Personaje p=(Personaje)temp.dato;
-                direccion=getClass().getResource("/Imagenes/mariov.png");
+                if(p.direccion.equals("derecha")){                    
+                    direccion=getClass().getResource("/Imagenes/mariod.png");
+                }else{
+                    direccion=getClass().getResource("/Imagenes/marioi.png");
+                }
                 imagen=new ImageIcon(direccion);
                 etiqueta=new JLabel(imagen);
             }catch(Exception e){
@@ -299,6 +309,13 @@ public class HiloMovimiento implements Runnable{
                                     if(tempcol.abajo.dato!=null){//existe elemento en la posicion inferior, se mueve hacia el lado correspondiente
                                         if(o.direccion.equals("derecha")){
                                             if(tempcol.siguiente.dato!=null){//existe tope, se cambia direccion del enemigo
+                                                //se verifica si es personaje, se decrementa vida
+                                                try{
+                                                    Personaje p=(Personaje)tempcol.dato;
+                                                    vida--;
+                                                }catch(Exception er){
+                                                    
+                                                }
                                                 o.direccion="izquierda";
                                                 tempcol.dato=o;
                                             }else{//enemigo se mueve a la derecha
@@ -308,6 +325,12 @@ public class HiloMovimiento implements Runnable{
                                             }
                                         }else{//objeto se mueve a la izquierda
                                             if(tempcol.anterior.dato!=null){//existe tope, se cambia direccion del enemigo
+                                                try{
+                                                    Personaje p=(Personaje)tempcol.dato;
+                                                    vida--;
+                                                }catch(Exception er){
+                                                    
+                                                }
                                                 o.direccion="derecha";
                                                 tempcol.dato=o;
                                             }else{//enemigo se mueve a la derecha                                
@@ -340,23 +363,43 @@ public class HiloMovimiento implements Runnable{
                             Personaje p=(Personaje)tempcol.dato;
                             if(tempcol.abajo==null){//personaje muere
                                 tempcol.dato=null;
+                                vida=0;
                             }else{//se verifica que tiene abajo
-                                if(tempcol.abajo.dato==null){
+                                if(tempcol.abajo.dato==null){                                    
+                                    tempcol.abajo.dato=tempcol.dato;
+                                    tempcol.dato=null;
+                                }else{
                                     Objeto o=(Objeto)tempcol.abajo.dato;
                                     switch(o.getTipo()){                                                                                                                        
-                                        case 5:
+                                        case 3://encuentra goomba                                        
+                                        tempcol.abajo.dato=tempcol.dato;
+                                        tempcol.dato=null;
+                                        break;
+                                        case 4://encuentra koopa
+                                            //personaje no se mueve, siguiente corrida koopa cambia de posicion
+                                        break;
+                                        case 5://moneda
                                         punteo++;
+                                        tempcol.abajo.dato=tempcol.dato;
+                                        tempcol.dato=null;
                                         break;
-                                        case 6:
+                                        case 6://hongo
                                         vida++;
+                                        tempcol.abajo.dato=tempcol.dato;
+                                        tempcol.dato=null;
                                         break;
-                                        case 7:
-                                            System.out.println("Juego Ganado");
+                                        case 7://castillo gana el juego
+                                        tempcol.abajo.dato=tempcol.dato;
+                                        tempcol.dato=null;
+                                        URL direccion=null;
+                                        ImageIcon imagen=null; 
+                                        direccion=getClass().getResource("/Imagenes/gano.png");
+                                        imagen=new ImageIcon(direccion); 
+                                        JOptionPane.showMessageDialog(null, imagen);
+                                        System.exit(0);
                                         break;
                                         default:
                                     }
-                                    tempcol.abajo.dato=tempcol.dato;
-                                    tempcol.dato=null;
                                 }
                             }
                         }catch(Exception ex){
@@ -368,6 +411,16 @@ public class HiloMovimiento implements Runnable{
             }
             tempfila=tempfila.abajo;
         }        
+        if(vida<=0){
+            URL direccion=null;
+            ImageIcon imagen=null; 
+            direccion=getClass().getResource("/Imagenes/perdio.png");
+            imagen=new ImageIcon(direccion); 
+            JOptionPane.showMessageDialog(null, imagen);
+            System.exit(0);
+        }
+        lvidas.setText("Vidas: "+vida);
+        lpunteo.setText("Punteo: "+punteo);
     }        
     
     public synchronized void Iniciar(){
@@ -404,13 +457,50 @@ public class HiloMovimiento implements Runnable{
                     
                     NodoMatriz temp=matriz.BuscarPersonaje();
                     Personaje p=(Personaje)temp.dato;
+                    p.direccion="derecha";
                     if(p!=null){                        
-                        if(temp.siguiente!=null){
-                            if(temp.siguiente.dato==null){
+                        if(temp.siguiente!=null){//verifica que no este en la ultima columna
+                            if(temp.siguiente.dato==null){//si no hay elemento a la derecha se mueve
                                 temp.siguiente.dato=p;
                                 temp.dato=null;
                                 System.out.println("derecho");
-                            }                          
+                            }else{//tiene que existir un objeto en esa posicion
+                                Objeto o=(Objeto)temp.siguiente.dato;
+                                switch(o.getTipo()){                                                                        
+                                    case 3://encuentra goomba
+                                    vida--;
+                                    temp.siguiente.dato=p;
+                                    temp.dato=null;
+                                    break;
+                                    case 4://encuentra koopa
+                                    vida--;
+                                    temp.siguiente.dato=p;
+                                    temp.dato=null;
+                                    break;
+                                    case 5://moneda
+                                    punteo++;
+                                    temp.siguiente.dato=p;
+                                    temp.dato=null;
+                                    break;
+                                    case 6://hongo
+                                    vida++;
+                                    temp.siguiente.dato=p;
+                                    temp.dato=null;
+                                    break;
+                                    case 7://castillo gana el juego
+                                    temp.siguiente.dato=p;
+                                    temp.dato=null;
+                                    URL direccion=null;
+                                    ImageIcon imagen=null; 
+                                    direccion=getClass().getResource("/Imagenes/gano.png");
+                                    imagen=new ImageIcon(direccion); 
+                                    JOptionPane.showMessageDialog(null, imagen);
+                                    System.exit(0);
+                                    break;
+                                    default:
+                                }
+                            }
+                            
                         }
                     }
                 
@@ -418,16 +508,114 @@ public class HiloMovimiento implements Runnable{
                     
                     NodoMatriz temp=matriz.BuscarPersonaje();
                     Personaje p=(Personaje)temp.dato;
+                    p.direccion="izquierda";
                     if(p!=null){
                         if(temp.anterior!=null){
                             if(temp.anterior.dato==null){
                                 temp.anterior.dato=p;
                                 temp.dato=null;
                                 System.out.println("izquierda");
-                            }                            
+                            }else{
+                                Objeto o=(Objeto)temp.anterior.dato;
+                                switch(o.getTipo()){                                                                        
+                                    case 3://encuentra goomba
+                                    vida--;
+                                    temp.anterior.dato=p;
+                                    temp.dato=null;
+                                    break;
+                                    case 4://encuentra koopa
+                                    vida--;
+                                    temp.anterior.dato=p;
+                                    temp.dato=null;
+                                    break;
+                                    case 5://moneda
+                                    punteo++;
+                                    temp.anterior.dato=p;
+                                    temp.dato=null;
+                                    break;
+                                    case 6://hongo
+                                    vida++;
+                                    temp.anterior.dato=p;
+                                    temp.dato=null;
+                                    break;
+                                    case 7://castillo gana el juego
+                                    temp.anterior.dato=p;
+                                    temp.dato=null;
+                                    URL direccion=null;
+                                    ImageIcon imagen=null; 
+                                    direccion=getClass().getResource("/Imagenes/gano.png");
+                                    imagen=new ImageIcon(direccion); 
+                                    JOptionPane.showMessageDialog(null, imagen);
+                                    System.exit(0);
+                                    break;
+                                    default:
+                                }
+                            }                        
                         }
                     }
                 
+                }else if(e.VK_UP==e.getKeyCode()){
+                    NodoMatriz temp=matriz.BuscarPersonaje();
+                    Personaje p=(Personaje)temp.dato;
+                    if(p.direccion.equals("derecha")){//salta dos espacios hacia arriba, uno a la derecha
+                        if(temp.arriba!=null){//existe nodo arriba del personaje
+                            if(temp.arriba.dato==null){//hay espacio arriba se mueve un espacio
+                                if(temp.arriba.arriba!=null){//existe nodo arriba
+                                   if(temp.arriba.arriba.dato==null) {//hay espacio arriba
+                                       if(temp.arriba.arriba.siguiente!=null){//existe nodo a la derecha
+                                           if(temp.arriba.arriba.siguiente.dato==null){//hay espacio a la derecha
+                                               temp.arriba.arriba.siguiente.dato=p;
+                                               temp.dato=null;
+                                           }else{//no hay espacio a la derecha, salta dos espacios
+                                               temp.arriba.arriba.dato=p;
+                                               temp.dato=null;
+                                           }
+                                       }else{//no existe nodo a la derecha, salta dos espacios
+                                            temp.arriba.arriba.dato=p;
+                                            temp.dato=null;
+                                       }
+                                   }else{//no hay espacio arriba, salta un espacio
+                                       temp.arriba.dato=p;
+                                       temp.dato=null;
+                                   }
+                                }else{//no existe nodo arriba, salta un espacio
+                                    temp.arriba.dato=p;
+                                    temp.dato=null;
+                                }
+                            }
+                            //no hay espacio arriba, no salta
+                        }//no existe nodo arriba, no salta
+                        
+                    }else{
+                        if(temp.arriba!=null){//existe nodo arriba del personaje
+                            if(temp.arriba.dato==null){//hay espacio arriba se mueve un espacio
+                                if(temp.arriba.arriba!=null){//existe nodo arriba
+                                   if(temp.arriba.arriba.dato==null) {//hay espacio arriba se mueve un espacio
+                                       if(temp.arriba.arriba.anterior!=null){//existe nodo a la izquierda
+                                           if(temp.arriba.arriba.anterior.dato==null){//hay espacio se mueve hacia esta posicion
+                                               temp.arriba.arriba.anterior.dato=p;
+                                               temp.dato=null;
+                                           }else{//no hay espacio solo salta dos espacios, no se desplaza
+                                               temp.arriba.arriba.dato=p;
+                                               temp.dato=null;
+                                           }
+                                       }else{//no hay nodo a la izquierda, solo salta dos espacios
+                                            temp.arriba.arriba.dato=p;
+                                            temp.dato=null;
+                                       }
+                                   }else{//no hay espacio, solo salta un espacio
+                                       temp.arriba.dato=p;
+                                       temp.dato=null;
+                                   }
+                                }else{//no existe nodo arriba, solo salta un espacio
+                                    temp.arriba.dato=p;
+                                    temp.dato=null;
+                                }
+                            }
+                            //no hay espacio no se desplaza
+                        }//no existe nodo arriba, no salta
+                    }
+                    
                 }
             }
         }

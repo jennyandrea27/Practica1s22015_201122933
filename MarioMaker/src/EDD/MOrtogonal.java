@@ -302,9 +302,10 @@ public class MOrtogonal implements Cloneable{
                     }
                 }catch(Exception er){
                 }
-            tempcol=tempcol.siguiente;
+                tempcol=tempcol.siguiente;
             }
             tempfila=tempfila.abajo;
+            tempcol=tempfila;
         }
         return null;
     }
