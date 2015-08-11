@@ -1,0 +1,14 @@
+digraph G{
+subgraph cluster1{
+node [shape=parallelogram,style=filled,color=forestgreen];
+style=filled;
+color=green;
+edge [arrowhead=diamond,arrowtail=diamond,dir=both];
+label="LISTA DOBLEMENTE ENLAZADA";
+nodo0[label="pared"];
+nodo0->nodo1;
+nodo1[label="koopa"];
+nodo1->nodo2;
+nodo2[label="suelo"];
+}
+}

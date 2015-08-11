@@ -89,7 +89,7 @@ public class ListaD {
                 return temp;
             }
             pinicio=pinicio.siguiente;
-            pinicio.siguiente.anterior=null;
+            pinicio.anterior.siguiente=null;
             pinicio.anterior=null;
             cantidad--;
             System.out.println("Elemento eliminado");
@@ -244,4 +244,94 @@ public class ListaD {
         temp=temp.siguiente;
         }  
     }
+    public String ResumenObjetos(){
+        String s="";
+        int contp=0;
+        int contc=0;
+        int contsuelo=0,contpared=0,contgoomba=0,contkoopa=0,contmoneda=0,conthongo=0;
+        
+        if(!Vacia()){
+            Nodo temp=pinicio;
+            while(temp!=null){
+                try{
+                    Personaje p=(Personaje)temp.dato;
+                    contp++;
+                }catch(Exception er){
+                    try{
+                        Objeto o=(Objeto)temp.dato;
+                        switch(o.getTipo()){
+                            case 1://suelo
+                            contsuelo++;
+                            break;
+                        case 2://pared
+                            contpared++;
+                            break;
+                        case 3://goomba
+                            contgoomba++;
+                            break;
+                        case 4://koopa
+                            contkoopa++;
+                            break;
+                        case 5://moneda
+                            contmoneda++;
+                            break;
+                        case 6://hongo
+                            conthongo++;
+                            break;
+                        case 7://castillo
+                            contc++;
+                            break;
+                        default:                    
+                        }
+                    }catch(Exception ex){
+                        
+                    }
+                }
+                temp=temp.siguiente;
+            }
+        }else{ 
+            s+="No existen elementos en la lista";
+        }
+        s+="Total de objetos en la lista:</br>";
+        s+="</br>Personaje principal: "+contp;
+        s+="</br>Castillo: "+contc;
+        s+="</br>Suelo: "+contsuelo;
+        s+="</br>Pared: "+contpared;
+        s+="</br>Goomba: "+contgoomba;
+        s+="</br>Koopa: "+contkoopa;
+        s+="</br>Moneda: "+contmoneda;
+        s+="</br>Hongo de vida: "+conthongo;
+        return s;
+    }
+    public String Graficar(){
+        String s="";
+        s+="digraph G{\n";
+        s+="subgraph cluster1{\n";
+        s+="node [shape=parallelogram,style=filled,color=forestgreen];\n";
+        s+="style=filled;\n";
+        s+="color=green;\n";
+        s+="edge [arrowhead=diamond,arrowtail=diamond,dir=both];\n";
+        s+="label=\"LISTA DOBLEMENTE ENLAZADA\";\n";
+        Nodo temp=pinicio;
+        int cont=0;
+        while(temp!=null){
+            //declaracion de nodos
+            try{
+                Personaje p=(Personaje)temp.dato;                
+                s+="nodo"+cont+"[label=\""+p.nombre+"\n"+p.tipo+"\"];\n";
+            }catch(Exception er){
+                Objeto o=(Objeto)temp.dato;
+                s+="nodo"+cont+"[label=\""+o.nombre+"\"];\n";
+            }   
+            //enlaces
+            if(temp.siguiente!=null){
+                s+="nodo"+cont+"->"+"nodo"+(cont+1)+";\n";
+            }
+            cont++;
+            temp=temp.siguiente;
+        }
+        s+="}\n}";
+        return s;
+    }
+    
 }

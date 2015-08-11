@@ -10,11 +10,14 @@ package mariomaker;
  * @author jenny
  */
 public class Objeto {
-    public String nombre,tipo;
+    public String nombre,tipo,direccion;
+    public boolean bajo;
     
     public Objeto(String nombre,String tipo){
         this.nombre=nombre;
         this.tipo=tipo;        
+        this.direccion="derecha";
+        this.bajo=false;
     }
     void Imprimir(){
         System.out.println("Objeto "+this.tipo+" "+this.nombre);

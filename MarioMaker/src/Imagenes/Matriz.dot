@@ -1,0 +1,120 @@
+digraph G{
+rankdir=RL;
+orientation=portrait;
+subgraph cluster1{
+node[shape=box,style=filled,color=lightskyblue];
+style=filled;
+color=skyblue;
+edge[arrowhead=inv,arrowtail=inv,dir=both];
+label="MATRIZ ORTOGONAL";
+nodo11[label="Objeto
+Vacio
+ 1,1"];
+nodo11 -> nodo12;
+nodo12[label="Objeto
+Vacio
+ 1,2"];
+nodo12 -> nodo13;
+nodo13[label="Objeto
+Vacio
+ 1,3"];
+nodo13 -> nodo14;
+nodo14[label="Objeto
+Vacio
+ 1,4"];
+nodo14 -> nodo15;
+nodo15[label="Objeto
+Vacio
+ 1,5"];
+nodo15 -> nodo16;
+nodo16[label="Objeto
+Vacio
+ 1,6"];
+nodo16 -> nodo17;
+nodo17[label="Objeto
+Vacio
+ 1,7"];
+nodo17 -> nodo18;
+nodo18[label="Objeto
+Vacio
+ 1,8"];
+nodo21[label="
+suelo
+ 2,1"];
+nodo21 -> nodo11;
+nodo21 -> nodo22;
+nodo22[label="Objeto
+Vacio
+ 2,2"];
+nodo22 -> nodo12;
+nodo22 -> nodo23;
+nodo23[label="Objeto
+Vacio
+ 2,3"];
+nodo23 -> nodo13;
+nodo23 -> nodo24;
+nodo24[label="
+koopa
+ 2,4"];
+nodo24 -> nodo14;
+nodo24 -> nodo25;
+nodo25[label="Objeto
+Vacio
+ 2,5"];
+nodo25 -> nodo15;
+nodo25 -> nodo26;
+nodo26[label="Objeto
+Vacio
+ 2,6"];
+nodo26 -> nodo16;
+nodo26 -> nodo27;
+nodo27[label="Objeto
+Vacio
+ 2,7"];
+nodo27 -> nodo17;
+nodo27 -> nodo28;
+nodo28[label="
+suelo
+ 2,8"];
+nodo28 -> nodo18;
+nodo31[label="Objeto
+Vacio
+ 3,1"];
+nodo31 -> nodo21;
+nodo31 -> nodo32;
+nodo32[label="
+suelo
+ 3,2"];
+nodo32 -> nodo22;
+nodo32 -> nodo33;
+nodo33[label="
+suelo
+ 3,3"];
+nodo33 -> nodo23;
+nodo33 -> nodo34;
+nodo34[label="
+suelo
+ 3,4"];
+nodo34 -> nodo24;
+nodo34 -> nodo35;
+nodo35[label="
+suelo
+ 3,5"];
+nodo35 -> nodo25;
+nodo35 -> nodo36;
+nodo36[label="
+suelo
+ 3,6"];
+nodo36 -> nodo26;
+nodo36 -> nodo37;
+nodo37[label="
+suelo
+ 3,7"];
+nodo37 -> nodo27;
+nodo37 -> nodo38;
+nodo38[label="Objeto
+Vacio
+ 3,8"];
+nodo38 -> nodo28;
+}
+}

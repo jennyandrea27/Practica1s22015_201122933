@@ -315,23 +315,9 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_bGuardarObjetoActionPerformed
 
     private void bVistaPreviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bVistaPreviaActionPerformed
-        // TODO add your handling code here:
-        Nodo temp=listadoble.pinicio;
-        while(temp!=null){
-            try{
-                Personaje p=(Personaje)temp.dato;
-                p.Imprimir();
-            }catch(Exception e){
-                try{
-                    Objeto o=(Objeto)temp.dato;
-                    o.Imprimir();
-                }catch(Exception er){
-                    
-                }
-            }
-        temp=temp.siguiente;
-        }        
+        // TODO add your handling code here:       
         if(!listadoble.Vacia()){
+            frameVista=new JFrame();
             GraficarLista();        
         }else{
             JOptionPane.showMessageDialog(null, "No se han agregado nodos");
@@ -387,7 +373,7 @@ public class Principal extends javax.swing.JFrame {
         panelVista2.add(etiqueta);
         JLabel numboton=new JLabel("");
         numboton.setBounds(0, 0, 50, 50);
-        //numboton.setVisible(false);
+        numboton.setVisible(false);
         panelVista2.add(numboton);
         //campos de texto
         JTextField tbnombre=new JTextField();
@@ -414,7 +400,7 @@ public class Principal extends javax.swing.JFrame {
                 Personaje p=(Personaje)temp.dato;
                 direccion=getClass().getResource("/Imagenes/mariov.png");
                 imagen=new ImageIcon(direccion);
-                boton=new JButton(imagen);
+                boton=new JButton(imagen);                
             }catch(Exception e){
                 try{
                     Objeto o=(Objeto)temp.dato;
@@ -467,11 +453,10 @@ public class Principal extends javax.swing.JFrame {
         AgregarMetodo(boton, tbnombre, tbtipo,numboton);
         panelVista.add(boton);
         pos++;        
-        x+=50;
+        x+=50;      
         
         temp=temp.siguiente;
-        }      
-        
+        }              
         //fondo frameVista
         frameVista.setLayout(null);
         direccion=getClass().getResource("/Imagenes/fondo_1.jpg");
@@ -507,7 +492,7 @@ public class Principal extends javax.swing.JFrame {
                         tbnombre.setText(o.nombre);
                         tbtipo.setText(o.tipo);
                     }catch(Exception ex){
-                        
+                            System.out.println("Error al agregar evento a los botones");
                     }
                 }
                 
@@ -539,7 +524,7 @@ public class Principal extends javax.swing.JFrame {
                         Objeto o2=new Objeto(tbnombre.getText(), tbtipo.getText());
                         listadoble.Reemplazar(num, o2);
                     }catch(Exception ex){
-                        
+                        System.out.println("Error al agregar metodo modificar");
                     }
                 }
                 tbnombre.setText("");
@@ -569,7 +554,7 @@ public class Principal extends javax.swing.JFrame {
                         Objeto o=(Objeto)temp.dato;
                         castillo=false;
                     }catch(Exception ex){
-                        
+                        System.out.println("Error al agregar metodo eliminar");
                     }
                 }                    
                 }
@@ -601,6 +586,8 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_bGuardarCastilloActionPerformed
 
+    
+    
     private void bGuardarPersonajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bGuardarPersonajeActionPerformed
         // TODO add your handling code here:
         if(!PersonajeAgregado()){
@@ -626,10 +613,6 @@ public class Principal extends javax.swing.JFrame {
         pcomportamiento.setVisible(true);                        
     }//GEN-LAST:event_bSiguienteActionPerformed
 
-    //Metodo para generar frame para generar matriz
-    public void GenerarMatriz(){
-        
-    }
     
     //metodo para verificar si existe personaje
     public boolean PersonajeAgregado(){

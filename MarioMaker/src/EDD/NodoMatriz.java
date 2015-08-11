@@ -12,9 +12,9 @@ import javax.swing.JLabel;
  * @author jenny
  */
 public class NodoMatriz {
-    NodoMatriz anterior,siguiente,arriba,abajo;
-    Object dato;
-    JLabel label;
+    public NodoMatriz anterior,siguiente,arriba,abajo;
+    public Object dato;
+    public JLabel label;
     
     public NodoMatriz(Object dato){
         this.anterior=null;
